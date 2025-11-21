@@ -1,7 +1,7 @@
 class MySelect extends HTMLElement {
     constructor(){
         super();
-        console.log('Hello World123');
+        console.log('Hello World');
 
     }
 }
