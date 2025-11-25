@@ -5,29 +5,29 @@
     </head>
     <body>
         <h1>My First Example</h1>
-<!--        <my-select></my-select>-->
-<!--        <script src="./my-select.js"></script>-->
+        <my-select></my-select>
+        <script src="./my-select.js"></script>
         <h2>first task</h2>
-        <script>
-            const onLoad = (evt)=>{
-    //            customElements.define('my-select', script),
-                console.log(evt);
-                const name = evt.target.name;
-                if(name){
-                    class MySelect extends HTMLElement{ }
-                    customElements.define(name, MySelect);
-                }
-            }
+<!--        <script>-->
+<!--            const onLoad = (evt)=>{-->
+<!--    //            customElements.define('my-select', script),-->
+<!--                console.log(evt);-->
+<!--                const name = evt.target.name;-->
+<!--                if(name){-->
+<!--                    class MySelect extends HTMLElement{ }-->
+<!--                    customElements.define(name, MySelect);-->
+<!--                }-->
+<!--            }-->
 
-            const onError = (err)=>{console.log(err)}
-            const components = ['my-select', 'my-checkbox'];
-            components.forEach(component=>{
-            const script = document.createElement('script');
-            script.src = `./${component}.js`;
-            script.dataset.name = component;
-            script.addEventListener('load', onLoad);
-            document.body.append(script);
-        });
-        </script>
+<!--            const onError = (err)=>{console.log(err)}-->
+<!--            const components = ['my-select', 'my-checkbox'];-->
+<!--            components.forEach(component=>{-->
+<!--            const script = document.createElement('script');-->
+<!--            script.src = `./${component}.js`;-->
+<!--            script.dataset.name = component;-->
+<!--            script.addEventListener('load', onLoad);-->
+<!--            document.body.append(script);-->
+<!--        });-->
+<!--        </script>-->
     </body>
 </html>
