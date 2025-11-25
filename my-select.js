@@ -41,6 +41,7 @@ class MySelect extends HTMLElement {
                                 }
                                 .select-popup.open{
                                     display: block;
+                                    z-index: 1;
                                 }
                                 .select-popup-search {
                                   width: 100%;
