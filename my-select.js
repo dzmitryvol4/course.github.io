@@ -29,17 +29,53 @@ class MySelect extends HTMLElement {
                                 .select-popup{
                                     display: none;
                                     position: absolute;
-                                    background:var(--select-popup-background, grey);
                                     top: 100%;
+                                    width: auto;
                                     left: 0;
+                                    padding: 0.375rem 0.75rem;
+                                    color: #212529;
+                                    background-color: #fff;
+                                    background-clip: padding-box;
+                                    border: 1px solid #bdbdbd;
+                                    border-radius: 0.25rem;
                                 }
                                 .select-popup.open{
                                     display: block;
                                 }
+                                .select-popup-search {
+                                  width: 100%;
+                                  border: none;
+                                  font-size: 14px;
+                                }
+
+                                .select-popup-options {
+                                  max-height: 200px;
+                                  overflow-y: auto;
+                                  width: 100%;
+                                  box-sizing: border-box;
+                                }
+
+                                .option {
+                                  display: block;
+                                  padding: 1rem 0.1rem;
+                                  cursor: pointer;
+                                }
+
+                                .option:hover {
+                                  background: var(--select-option-hover, #bdbdbd);
+                                }
+                                .input{
+                                  padding: 0.375rem 0.75rem;
+                                  color: #212529;
+                                  background-color: #fff;
+                                  background-clip: padding-box;
+                                  border: 1px solid #bdbdbd;
+                                  border-radius: 0.25rem;
+                                }
                               </style>
                               <button class="select-button">open</button>
                               <div class="select-popup">
-                              <input placeholder="Search..."/>
+                              <input class="input" placeholder="Search..."/>
                               <div class="select-popup-options"><!--Здесь будет список опций--></div>
                               </div>`;
         this.#shadow.appendChild(template.content.cloneNode(true))
