@@ -3,6 +3,7 @@ class MySelect extends HTMLElement {
     #selectPopup;
     #selectPopupSearch;
     #optionsBox;
+    #shadow;
 
     constructor(){
         super();
@@ -12,6 +13,7 @@ class MySelect extends HTMLElement {
 
     connectedCallback(){
         console.log('connectedCallback');
+        this.#shadow = this.attachShadow({ mode: "open" });
         this.#createTemplate();
         this.#renderOptions();
     }
@@ -19,22 +21,40 @@ class MySelect extends HTMLElement {
     #createTemplate() {
         console.log('createTemplate');
         const template = document.createElement("template");
-        template.innerHTML = `<div class="select-popup">
+        template.innerHTML = `<style>
+                                :host{
+                                    position: relative;
+                                    display: inline-block;
+                                }
+                                .select-popup{
+                                    display: none;
+                                    position: absolute;
+                                    background:var(--select-popup-background, grey);
+                                    top: 100%;
+                                    left: 0;
+                                }
+                                .select-popup.open{
+                                    display: block;
+                                }
+                              </style>
+                              <button class="select-button">open</button>
+                              <div class="select-popup">
                               <input placeholder="Search..."/>
                               <div class="select-popup-options"><!--Здесь будет список опций--></div>
                               </div>`;
-        this.#selectButton = this.querySelector(".select-button");
-        this.#selectPopup= this.querySelector(".select-popup");
-        this.#selectPopupSearch = this.querySelector(".select-popup-search");
-        this.#optionsBox= this.querySelector(".select-popup-options");
-
+        this.#shadow.appendChild(template.content.cloneNode(true))
+        this.#selectButton = this.#shadow.querySelector(".select-button");
+        this.#selectPopup= this.#shadow.querySelector(".select-popup");
+        this.#selectPopupSearch = this.#shadow.querySelector(".select-popup input");
+        this.#optionsBox= this.#shadow.querySelector(".select-popup-options");
         this.append(template.content.cloneNode(true));
         console.log(this);
+        this.#selectButton.addEventListener("click", () => this.#openPopup());
     }
 
     #renderOptions(){
         console.log('renderOptions', this);
-        this.#optionsBox= this.querySelector(".select-popup-options");
+        this.#optionsBox= this.#shadow.querySelector(".select-popup-options");
         const options = [...this.children]
             .filter((el)=> el.tagName === 'OPTION')
             .map((opti)=> ({
@@ -53,6 +73,10 @@ class MySelect extends HTMLElement {
             `;
             this.#optionsBox.append(optionTemplate.content.cloneNode(true));
         })
+    }
+
+    #openPopup() {
+        this.#selectPopup.classList.toggle("open");
     }
 }
 customElements.define('my-select', MySelect);
