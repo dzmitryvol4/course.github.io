@@ -75,15 +75,18 @@ class MySelect extends HTMLElement {
                               </style>
                               <button class="select-button">open</button>
                               <div class="select-popup">
-                              <input class="input" placeholder="Search..."/>
-                              <div class="select-popup-options"><!--Здесь будет список опций--></div>
+                                <slot name="search">
+                                  <input class="input" placeholder="Search..."/>
+                                </slot>
+                                <div class="select-popup-options"><!--Здесь будет список опций--></div>
                               </div>`;
+//                                <input class="input" placeholder="Search..."/>
         this.#shadow.appendChild(template.content.cloneNode(true))
         this.#selectButton = this.#shadow.querySelector(".select-button");
         this.#selectPopup= this.#shadow.querySelector(".select-popup");
         this.#selectPopupSearch = this.#shadow.querySelector(".select-popup input");
         this.#optionsBox= this.#shadow.querySelector(".select-popup-options");
-        this.append(template.content.cloneNode(true));
+//        this.#shadow.append(template.content.cloneNode(true));
         console.log(this);
         this.#selectButton.addEventListener("click", () => this.#openPopup());
     }
