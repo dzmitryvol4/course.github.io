@@ -64,7 +64,7 @@ class MyPanel extends HTMLElement {
                     padding: 10px;
                     color: var(--text-color, #333);
                     background: white;
-                    height: 200px;
+                    height: 300px;
                  }
             </style>
             <div class="panel">

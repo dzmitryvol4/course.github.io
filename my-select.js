@@ -4,6 +4,8 @@ class MySelect extends HTMLElement {
     #selectPopupSearch;
     #optionsBox;
     #shadow;
+    #inputSearch;
+    #selectedDataCheckbox;
 
     constructor(){
         super();
@@ -12,14 +14,16 @@ class MySelect extends HTMLElement {
     }
 
     connectedCallback(){
-        console.log('connectedCallback');
+//        console.log('connectedCallback');
         this.#shadow = this.attachShadow({ mode: "open" });
         this.#createTemplate();
         this.#renderOptions();
+        this.#searchData();
+        this.#closeWindowPopup();
     }
 
     #createTemplate() {
-        console.log('createTemplate');
+//        console.log('createTemplate');
         const template = document.createElement("template");
         template.innerHTML = `<style>
                                 :host{
@@ -62,6 +66,10 @@ class MySelect extends HTMLElement {
                                   cursor: pointer;
                                 }
 
+                                .option.hidden {
+                                  display: none;
+                                }
+
                                 .option:hover {
                                   background: var(--select-option-hover, #bdbdbd);
                                 }
@@ -74,20 +82,22 @@ class MySelect extends HTMLElement {
                                   border-radius: 0.25rem;
                                 }
                               </style>
-                              <button class="select-button">open</button>
-                              <div class="select-popup">
-                                <slot name="search">
-                                  <input class="input" placeholder="Search..."/>
-                                </slot>
-                                <div class="select-popup-options"><!--Здесь будет список опций--></div>
-                              </div>`;
+                                  <input class="selected-data"/>
+                                  <button class="select-button">open</button>
+                                  <div class="select-popup">
+                                    <slot name="search">
+                                      <input class="input" placeholder="Search..."/>
+                                    </slot>
+                                    <div class="select-popup-options"><!--Здесь будет список опций--></div>
+                                  </div>`;
 //                                <input class="input" placeholder="Search..."/>
         this.#shadow.appendChild(template.content.cloneNode(true))
+        this.#selectedDataCheckbox = this.#shadow.querySelector(".selected-data");
         this.#selectButton = this.#shadow.querySelector(".select-button");
         this.#selectPopup= this.#shadow.querySelector(".select-popup");
         this.#selectPopupSearch = this.#shadow.querySelector(".select-popup input");
         this.#optionsBox= this.#shadow.querySelector(".select-popup-options");
-//        this.#shadow.append(template.content.cloneNode(true));
+        this.#inputSearch = this.#shadow.querySelector(".input");
         console.log(this);
         this.#selectButton.addEventListener("click", () => this.#openPopup());
     }
@@ -103,20 +113,62 @@ class MySelect extends HTMLElement {
         }));
         console.log(options)
 
-        const optionTemplate = document.createElement('template');
-
+        this.#optionsBox.innerHTML = ``;
         options.forEach((option)=>{
+        const optionTemplate = document.createElement('template');
+            console.log(option)
             optionTemplate.innerHTML = `
                 <label class="option" data-value="${option.value}">
-                    <input type="checkbox" />
+                    <input type="checkbox" value="${option.value}" text="${option.text}" />
                 ${option.text}</label>
             `;
             this.#optionsBox.append(optionTemplate.content.cloneNode(true));
         })
+        this.#getData();
+    }
+
+    #getData(){
+        this.#optionsBox.addEventListener('change', (e)=>{
+            const nodeList = this.#optionsBox.querySelectorAll('input[type="checkbox"]:checked');
+            console.log(nodeList);
+            if(nodeList.length === 0){
+                this.#selectedDataCheckbox.value = '';
+            }else {
+                const selectedTexts = Array.from(nodeList).map(checkbox => checkbox.getAttribute('text'));
+                this.#selectedDataCheckbox.value = selectedTexts.join(', ');
+            }
+        });
+    }
+
+    #searchData(){
+        this.#inputSearch.addEventListener('input', ()=>{
+            const inputText = this.#inputSearch.value;
+            const options = this.#optionsBox.querySelectorAll('.option');
+            options.forEach((option)=>{
+                const text = option.textContent;
+                if(text.toLowerCase().includes(inputText.toLowerCase())){
+                    option.classList.remove('hidden');
+                }else {
+                    option.classList.add('hidden');
+                }
+            })
+        })
     }
 
     #openPopup() {
-        this.#selectPopup.classList.toggle("open");
+        this.#selectPopup.classList.add("open");
+    }
+
+    #closePopup() {
+        this.#selectPopup.classList.remove("open");
+    }
+
+    #closeWindowPopup() {
+        document.addEventListener('click', (event) => {
+            if (!this.contains(event.target)) {
+            this.#closePopup();
+            }
+        });
     }
 }
 customElements.define('my-select', MySelect);
