@@ -3,6 +3,7 @@ class MyPanel extends HTMLElement {
     #headerElement;
     #contentElement;
     #toggleButton;
+    #titleElement;
 
     constructor() {
         super();
@@ -16,12 +17,16 @@ class MyPanel extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['collapsed'];
+        return ['collapsed', 'header'];
     }
 
     attributeChangedCallback(name) {
         if (name === 'collapsed') {
             this.#syncState();
+        }
+
+        if (name === "header") {
+            this.#syncHeader();
         }
     }
 
@@ -81,6 +86,7 @@ class MyPanel extends HTMLElement {
         this.#headerElement = this.#shadow.querySelector('.header');
         this.#contentElement = this.#shadow.querySelector('.content');
         this.#toggleButton = this.#shadow.querySelector('.toggle');
+        this.#titleElement = this.#shadow.querySelector('.title');
     }
 
     #setupEvents() {
@@ -103,6 +109,14 @@ class MyPanel extends HTMLElement {
         if (this.#toggleButton) {
             this.#toggleButton.textContent = isCollapsed ? '+' : '−';
         }
+    }
+
+    #syncHeader() {
+        if (!this.#titleElement) return;
+
+        const header = this.getAttribute('header') || 'Панель';
+        this.#titleElement.textContent = header;
+
     }
 }
 
