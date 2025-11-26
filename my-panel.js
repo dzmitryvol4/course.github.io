@@ -4,6 +4,7 @@ class MyPanel extends HTMLElement {
     #contentElement;
     #toggleButton;
     #titleElement;
+    #subTitleElement;
 
     constructor() {
         super();
@@ -17,7 +18,7 @@ class MyPanel extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['collapsed', 'header'];
+        return ['collapsed', 'header', 'sub-header'];
     }
 
     attributeChangedCallback(name) {
@@ -28,10 +29,15 @@ class MyPanel extends HTMLElement {
         if (name === "header") {
             this.#syncHeader();
         }
+
+        if (name === "sub-header") {
+            this.#syncSubHeader();
+        }
     }
 
     #createTemplate() {
         const header = this.getAttribute('header') || 'Панель';
+        const subHeader = this.getAttribute('sub-header') || '';
         const isToggleable = this.hasAttribute('toggleable');
 
         this.#shadow.innerHTML = `
@@ -71,10 +77,16 @@ class MyPanel extends HTMLElement {
                     background: white;
                     height: 300px;
                  }
+
+                 .sub-title {
+                     font-size: 12px;
+                     color: var(--sub-title-color, #666);
+                 }
             </style>
             <div class="panel">
                 <div class="header">
                     <span class="title">${header}</span>
+                    ${subHeader ? `<span class="sub-title">${subHeader}</span>` : ''}
                     ${isToggleable ? '<span class="toggle">−</span>' : ''}
                 </div>
                 <div class="content">
@@ -87,6 +99,7 @@ class MyPanel extends HTMLElement {
         this.#contentElement = this.#shadow.querySelector('.content');
         this.#toggleButton = this.#shadow.querySelector('.toggle');
         this.#titleElement = this.#shadow.querySelector('.title');
+        this.#subTitleElement = this.#shadow.querySelector('.sub-title');
     }
 
     #setupEvents() {
@@ -116,7 +129,13 @@ class MyPanel extends HTMLElement {
 
         const header = this.getAttribute('header') || 'Панель';
         this.#titleElement.textContent = header;
+    }
 
+    #syncSubHeader() {
+        if (!this.#subTitleElement) return;
+
+        const subHeader = this.getAttribute('sub-header') || '';
+        this.#subTitleElement.textContent = subHeader;
     }
 }
 
