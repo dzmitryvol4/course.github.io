@@ -1,4 +1,3 @@
-const bc =new BroadcastChannel("test_channel");
 const slowFunction = (timeout = 3000) => {
     let start = performance.now();
     let x = 0;
@@ -8,8 +7,8 @@ const slowFunction = (timeout = 3000) => {
         x += (Math.random() - 0.5) * i;
     }while(performance.now() - start < timeout);
     console.log('end', x);
+    return x;
 }
 
 const result = slowFunction(3000);
-
-bc.postMessage(result);
+postMessage(result);
