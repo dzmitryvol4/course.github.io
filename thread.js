@@ -1,4 +1,4 @@
-onmessage = (e) => {
+//onmessage = (e) => {
     const slowFunction = (timeout = 3000) => {
         let start = performance.now();
         let x = 0;
@@ -11,6 +11,9 @@ onmessage = (e) => {
         return x;
     }
 
-    const result = slowFunction(3000);
-    postMessage(result);
-}
+//    const result = slowFunction(3000);
+    self.addEventListener('message', evt => {
+    const result = slowFunction(evt.data.timeout || 3000);
+    self.postMessage(result);
+    });
+//}
