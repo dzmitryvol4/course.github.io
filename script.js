@@ -11,28 +11,16 @@ document.getElementById('start').addEventListener('click', () => {
 if (window.Worker) {
     if(!thread){
         thread = new Worker("./thread.js");
-//        thread.onmessage = (evt) => {
-//            console.log(evt)
-//            document.getElementById('result').innerHTML = `returned value from worker ${evt.data}`;
-////            thread.terminate();
-//        };
-
+        console.log("thread")
         thread.addEventListener('message', evt => {
         document.getElementById('result').innerHTML = evt.data;
         });
-
         thread.postMessage({ timeout: 5000});
-        } else {
-            console.log("used already exist worker")
-//            thread.onmessage = (evt) => {
-//                console.log(evt)
-//                document.getElementById('result').innerHTML = `returned value from already exist worker ${evt.data}`;
-//            };
 
-            thread.addEventListener('message', evt => {
-                document.getElementById('result').innerHTML = evt.data;
-            });
-            thread.postMessage({ timeout: 5000});
+        } else {
+            console.log("thread")
+            console.log("used already exist worker")
+            thread.postMessage({ timeout: 5000})
         }
     }else {
     console.log("not worked")
