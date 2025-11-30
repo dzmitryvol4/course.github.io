@@ -29,7 +29,10 @@ const getCachedResult = (timeout) => {
 }
 
 const broadcast = async (msg) => {
-    const clients = await self.clients.matchAll();
+    const clients = await self.clients.matchAll({
+        type: 'window',
+        includeUncontrolled: true
+    });
     for(const client of clients) {
     client.postMessage(msg);
     }
@@ -40,7 +43,7 @@ console.log('activate', evt);
 evt.waitUntil(self.clients.claim());
 });
 
-self.addEventListener('message', evt => {
+self.addEventListener('message', async (evt) => {
     const { action, timeout = 3000 } = evt.data;
     console.log('message', evt);
     if(action === 'recalculate') {
