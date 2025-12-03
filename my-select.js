@@ -9,8 +9,6 @@ class MySelect extends HTMLElement {
 
     constructor(){
         super();
-        console.log('Hello World');
-
     }
 
     connectedCallback(){
@@ -171,4 +169,18 @@ class MySelect extends HTMLElement {
         });
     }
 }
-customElements.define('my-select', MySelect);
+//customElements.define('my-select', MySelect);
+
+function defineCustomElement() {
+    const currentScript = document.currentScript;
+    if (!currentScript || !currentScript.dataset.name) {
+        return;
+    }
+
+    const tagName = currentScript.dataset.name;
+    if (!customElements.get(tagName)) {
+        customElements.define(tagName, MySelect);
+    }
+}
+
+defineCustomElement();

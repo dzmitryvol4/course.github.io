@@ -23,6 +23,24 @@
 <!--                <option value="opt3">Option 3</option>-->
 <!--            </my-select>-->
             <h1>Web Components</h1>
+            <script>
+                const onLoad = (evt)=>{
+                    console.log(`компонент загружен, ${evt.target.dataset.name}`);
+                }
+
+                const onError = (err)=>{
+                    console.log(err)
+                }
+                const components = ['my-select'];
+                components.forEach(component => {
+                    const script = document.createElement('script');
+                    script.src = `./${component}.js`;
+                    script.dataset.name = component;
+                    script.addEventListener('load', onLoad);
+                    script.addEventListener('error', onError);
+                    document.body.appendChild(script);
+                });
+            </script>
             <my-panel header="Панель с шаблона" sub-header="Подзаголовок с шаблона" toggleable collapsed>
                 <my-select>
                     <option value="opt1">Option 1</option>
@@ -31,7 +49,7 @@
                 </my-select>
             </my-panel>
 <!--        </div>-->
-        <script src="./my-select.js"></script>
+<!--        <script src="./my-select.js"></script>-->
         <script src="./my-panel.js"></script>
         <h1>Web Worker</h1>
 <style>
