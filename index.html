@@ -5,15 +5,15 @@
         <title>My Course</title>
     </head>
     <body>
-    <style>
-        .container{
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-        }
-    </style>
-        <h1>Example</h1>
-        <div class = "container">
+<!--    <style>-->
+<!--        .container{-->
+<!--            display: flex;-->
+<!--            flex-direction: row;-->
+<!--            justify-content: space-between;-->
+<!--        }-->
+<!--    </style>-->
+<!--        <h1>Example</h1>-->
+<!--        <div class = "container">-->
 <!--            <my-select>-->
 <!--                <div slot="search">-->
 <!--                    <input class="light-find-box" placeholder="Поиск...">-->
@@ -22,7 +22,25 @@
 <!--                <option value="opt2">Option 2</option>-->
 <!--                <option value="opt3">Option 3</option>-->
 <!--            </my-select>-->
+            <h1>Web Components</h1>
+            <script>
+                const onLoad = (evt)=>{
+                    console.log(`компонент загружен, ${evt.target.dataset.name}`);
+                }
 
+                const onError = (err)=>{
+                    console.log(err)
+                }
+                const components = ['my-select'];
+                components.forEach(component => {
+                    const script = document.createElement('script');
+                    script.src = `./${component}.js`;
+                    script.dataset.name = component;
+                    script.addEventListener('load', onLoad);
+                    script.addEventListener('error', onError);
+                    document.body.appendChild(script);
+                });
+            </script>
             <my-panel header="Панель с шаблона" sub-header="Подзаголовок с шаблона" toggleable collapsed>
                 <my-select>
                     <option value="opt1">Option 1</option>
@@ -30,9 +48,45 @@
                     <option value="opt3">Option 3</option>
                 </my-select>
             </my-panel>
-        </div>
-        <script src="./my-select.js"></script>
+<!--        </div>-->
+<!--        <script src="./my-select.js"></script>-->
         <script src="./my-panel.js"></script>
+        <h1>Web Worker</h1>
+<style>
+    @keyframes spinner {
+    0% {
+    transform: scale(.1) rotate(0deg);
+        fill: currentColor;
+    }
+
+    33% {
+        transform: scale(1) rotate(150deg);
+        fill: transparent;
+    }
+
+    66% {
+        transform: scale(1) rotate(210deg);
+        fill: transparent;
+    }
+
+    100% {
+        transform: scale(.1) rotate(360deg);
+        fill: currentColor;
+    }
+    }
+
+    .spinner {
+        animation: spinner 1.5s infinite linear;
+        color: rgb(6, 75, 67);
+    }
+</style>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="56" fill="none" class="spinner"><path stroke="currentColor" stroke-width="4" d="M3.464 30a4 4 0 0 1 0-4L16 4.287a4 4 0 0 1 3.464-2h25.072a4 4 0 0 1 3.464 2L60.536 26a4 4 0 0 1 0 4L48 51.713a4 4 0 0 1-3.464 2H19.464a4 4 0 0 1-3.464-2L3.464 30Z"/></svg>
+<button id="start">Start!</button>
+<div>
+    <svg class="spinner">...</svg>
+</div>
+<div id="result"></div>
+<script src="./script.js"></script>
 <!--        <script>-->
 <!--            const onLoad = (evt)=>{-->
 <!--    //            customElements.define('my-select', script),-->
@@ -54,5 +108,11 @@
 <!--            document.body.append(script);-->
 <!--        });-->
 <!--        </script>-->
+
+    <h1>Service Worker</h1>
+    <button id="startServiceWorker">Start!</button>
+    <button id="stopServiceWorker">Stop!</button>
+    <div id="resultServiceWorker">Result</div>
+    <script src="./service-worker.js"></script>
     </body>
 </html>
